@@ -1,0 +1,145 @@
+= H3 Editing Kit Cookbook
+:author: PardusEidolon
+:email: jack@yumi.ai
+:imagesdir: images
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+:icons: font
+:version-label: Halo 3 Edition
+:toc:
+:experimental:
+
+:url-haloBlenderTools: https://github.com/General-101/Halo-Asset-Blender-Development-Toolset
+:url-osoyoos: https://github.com/num0005/Osoyoos-Launcher
+:url-theReclaimersLibrary: https://c20.reclaimers.net/
+:url-fryingpan: https://www.youtube.com/watch?v=_1F_YdKAxS8&list=PLey7NkPfa1p4cU5q9TUc-xWU_rT3VxWu2
+:url-reclaimerAdditions: https://c20.reclaimers.net/h3/level-creation/blender-level-creation-additional-info/
+:url-cloudconv: https://cloudconvert.com/login
+
+= Introduction
+This is a cookbook guide for the Halo 3 Editing Kit I'm relatively new to the halo modding space but have been lurking in it since the early Halo CE days. It's really exciting to see the halo modding community given access to the tools to make Halo 3 custom edition a reality.
+
+Fortunately for us all the pipeline hasn't really change all too much from what I can remember but the difference being here is that we use ASS (*Amalgam Scene Specification*) instead of `JMS` files. Our tools are all `64-Bit` so we don't get memory erros. The shader tag creation is streamlined so we no longer have to select a template. Out light baking is usually faster and we get to hop in and out of the game state in the new H3 Sapien tool.
+
+to get started, give {url-fryingpan}[fryingpanproductions] a follow. his tutorials on youtube are a good start to find your footing.
+
+= H3 Blender level guide
+
+== File Directories
+We need to set up our new directories first. Go to your H3EK root and under `data\levels\(yourNewDirectory)\(yourMapName)`
+
+[NOTE]
+I'm only creating a new directory here as to seperate my repugnant levels from the pretty ones.
+
+we can then create a few more directories such as `(yourMapName)\bitmaps` & `(yourMapName)\structure`
+
+[NOTE]
+this is where we will store our blender save file.
+
+== Blender level creation
+
+Set up a default scene, use the metric system for unit measurements and scale then increase the view clip start from `0.01` to `1` and clip end from `1000` to `10000000` to prevent our models from clipping through the ground.
+
+Im going to assume you know blender here and get straight to the meat & gravy. Make sure you have the Halo Blender tools extention installed {url-haloblendertools}[here.] I also have Osyoos installed which makes the modding pipeline a little bit faster, you can download that {url-osoyoos}[here.]
+
+With that out of the way I want to make sure that I have `Halo 3` checked in my `Halo Scene Properties` under `Scene`. from there I can start modeling.
+
+I'm going to create a basic cube and name it `b_levelroot` by hitting the shortcut kbd:[F2]. From here I can create another box and change the dimension in the side-bar to `5000m x, 5000 y, 3500 z`. kbd:[CTRL + A] and apply scale.
+
+let's name this to `level`. Select our `b_levelroot` then select our level box and kbd:[CTRL + P] to `set parent to object (keep transform)`.
+
+from here I've found that if you want to add anything from here such as instanced geometry you can, as it might be alot easier to model your map without having to stich the entire thing to prevent open edges when we go to export.
+
+if not we can simply just inset the bottom of our cube and do a little bit of modeling at the base.
+
+[IMPORTANT]
+Make sure to stay within the bounds of the sealed level box we created, think of it as the boundries for our level.
+
+
+=== Materials
+
+Go into the `materials` panel and create a new material and name it `+sky` give it a basic solid colour and create a second material and name it `(yourMapName)_ground`. I'm going to go find a tileable terrain texture I found in quixel bridge and use that as my ground texture.
+
+make sure to save the `albedo` into the `bitmaps` folder in our level directory.
+
+[IMPORTANT]
+Make sure the file format is a `.tiff`. Use photoshop or an online service such as cloud convert {url-cloudconv}[here]. It's also important you match the name of our texture with the name of the ground material in blender.
+
+if you don't want to use a custom shaders you can always refernce one from anyone of your favourite levels in there shaders folder be sure to stick with the reference list located in `tags\levels\shader_collections.txt` and pattern match on the name along with the name of the shader.
+
+for example if I wanted to use `010_sand` from the map waste under `tags\levels\solo\070_waste\shaders\terrain` I would simply look up the prefix in the `shader_collection` file, for waste and in the `materials` panel in blender, reference the shader such as `waste 010_sand` and assign the material to a section in our level.
+
+I'm going to be using custom materials here for my ground layer. So with our two materials set up, assign `+sky` to all polygons except the bottom. then with our bottom polygon selected assign our ground material.
+
+=== UV Unwrapping
+I'm not your mommy, This isn't a blender crash course.
+[IMPORTANT]
+Make sure you unwrap your levels and models properly to avoid stretching and weird warping.
+== Additions
+
+=== Shading & Sharpening
+Because Blender doesn't do smoothing groups we can use sharpening to give the illusion of smothed out geometry. I've found that the edgesplit modifier creates problems as it opens edges which is what we don't want. Blender documentation states that it's kept for historical/compatibility reasons and should only be used if you need the topology changes. we can achieve better shading by selecting the edges we want and marking them sharp (kbd:[SHIFT + E] to bring up the menu). make sure to `right click` and shade smooth.
+
+=== Instanced Geometry
+If you wish to add anymore geomtery we simply just create a mesh and parent it to the `b_levelroot` make sure to name it by giving it the `%` prefix then your suffix `(object name)`.
+
+Additional information such as extra skies, water etc you can check it {url-reclaimerAdditions}[here.]
+
+== Exporting
+
+Export your model as an `.ass` and make sure your settings are set to halo 3. Disable the edgesplit modifier and leave everything at default. save the `.ass` into the structure folder in our `data\levels\(yourNewDirectory)\(yourMapName)\structure` and hit export.
+
+Save the project file and exit.
+
+== Converting
+
+Im going to convert my custom textures to bitmaps first before I go ahead and import my level. We can do this either via the CLI `tool` by running the command
+
+[source, CMD]
+----
+tool bitmaps data\levels\(yourNewDirectory)\(yourMapName)\bitmaps
+----
+
+Or {url-osoyoos}[Osoyoos] I'll be using Osoyoos. There's a `import Bitmap` tab from which we can choose our textures and within a few clicks we will have a bitmap file. Tool should have either created the deafaul sub-directories in our tags folder, given if you set-up your directories correctly.
+
+== Building our scenario
+It's from here we can build our map into a `.scenario`. click on the `import&Light Level` tab select the `.ass` file we generated and make sure to leave it selected at import only, we'll move onto basic baking later on.
+
+== Guerilla
+We are now about the enter the tag editing system that is `guerilla` we use this to manipulate and create stuff for halo to recognise.
+
+=== Scenario Edit's
+Assuming we didnt run into any open edge errors (you can ignore the degen triangles for now) it's time to jump into the tag editor know as `guerilla` from there open up your scenario file under `tags\levels\(yourNewDirectory)\(yourMapName)` and change the type to multiplayer and check; 
+
+* [x] don't strip pathfinding
+
+[NOTE]
+Make sure `expert mode` is enabled.
+
+scroll down to the `skies` block and click add. from here you don't really have to do anything but if you want to go the extra mile by all means load in a preconfigured `sky.scenery` from your favourite level.
+
+Scroll on a little further up and input a new entry into the `objects` pallete and name it `cheif` then scroll down to `Player Starting P` click kbd:[ADD] and on the drop-down menu select `cheif inital` from there you can choose what you start with from intial weapons to grenades etc. Hit save and close down out scenario window.
+
+== Shaders
+
+I still haven't really wrapped my head around how shaders worked, this pipeline is a bit arkane from what im used to in the modern 3d world, it has been 14 years afer all.
+
+press kbd:[CRTL + N] to create a new instance and from the drop-down menu select `shader_terrain` this is a ground material afterall. set the `global ground material type 0` to something tough or soft, you choose. Right click on the empy box alongside it and go from there. This option I think tells the engine what it is and how projectiles,particles and sounds react to it, I'm only guessing here.
+
+scroll down to `Material_0` and select the three dots in on the far right of the window and open up our bitmap file we converted in out root level folder. From there close and save into a newly created folder named `shaders` hit save.
+
+[IMPORTANT]
+Make sure to name the shader the same as the ground material we created in blender for the engine to patttern-match.
+
+== Sapien
+
+If this is your first time opening sapien, controls to move around in our game window are kbd:[MIDDLE-MOUSE-BTN] and kbd:[W+A+S+D] to move around the map.
+
+=== Basic Terrain Shader
+Open up our scenario, and with our new level created the first thing we want to set is our sky. In our `Heirachy View` window select sky and under element select none then in our `Properties pallete` select the three dots and open up a `sky.scenery` file from our favourte level. I like `020_base` under `tags\levels\solo\020_base\sky\sky_01`. From here we can set our atmospherics under the scenario folder and scroll down in the properties pallete and select an `.sky_atm_parameters` I like Zanzibar's atmosphereic properties for example.
+
+=== Player spawning
+open up our scenario folder in the `Heirachy view` and find a folder named `player starting points` under `Game Data`. selece the `Player starting point` folder and right click on the map to add a spawn point. hit kbd:[TAB]and you can start playing your new map!
+
+=== AI
+N/A Will do this later.
