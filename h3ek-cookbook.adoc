@@ -86,13 +86,13 @@ If you wish to add anymore geomtery we simply just create a mesh and parent it t
 
 Additional information such as extra skies, water etc you can check it {url-reclaimerAdditions}[here.]
 
-== Exporting
+= Exporting
 
 Export your model as an `.ass` and make sure your settings are set to halo 3. Disable the edgesplit modifier and leave everything at default. save the `.ass` into the structure folder in our `data\levels\(yourNewDirectory)\(yourMapName)\structure` and hit export.
 
 Save the project file and exit.
 
-== Converting
+= Converting
 
 Im going to convert my custom textures to bitmaps first before I go ahead and import my level. We can do this either via the CLI `tool` by running the command
 
@@ -103,13 +103,13 @@ tool bitmaps data\levels\(yourNewDirectory)\(yourMapName)\bitmaps
 
 Or {url-osoyoos}[Osoyoos], I'll be using Osoyoos. There's a `import Bitmap` tab from which we can choose our textures and within a few clicks we will have a bitmap file. Tool should have either created the default sub-directories in our tags folder, given you set-up your directories correctly.
 
-== Building our scenario
+= Building our scenario
 It's from here we can build our map into a `.scenario`. click on the `import&Light Level` tab select the `.ass` file we generated and make sure to leave it selected at import only, we'll move onto basic baking later on.
 
-== Guerilla
+= Guerilla
 We are now about the enter the tag editing system that is `guerilla` we use this to manipulate and create stuff for halo to recognise.
 
-=== Scenario Edit's
+== Scenario Edit's
 Assuming we didnt run into any open edge errors (you can ignore the degen triangles for now) it's time to jump into the tag editor know as `guerilla` from there open up your scenario file under `tags\levels\(yourNewDirectory)\(yourMapName)` and change the type to multiplayer and check; 
 
 * [x] don't strip pathfinding
@@ -121,18 +121,18 @@ scroll down to the `skies` block and click add. from here you don't really have 
 
 Scroll on a little further up and input a new entry into the `objects` pallete and name it `cheif` then scroll down to `Player Starting P` click kbd:[ADD] and on the drop-down menu select `cheif inital` from there you can choose what you start with from intial weapons to grenades etc. Hit save and close down out scenario window.
 
-== Shaders
+= Shaders
 [IMPORTANT]
 Make sure to name the shader the same as the material you create in blender for the engine to patttern-match.
 
 I still haven't really wrapped my head around how shaders worked, this pipeline is a bit arkane from what im used to in the modern 3d world, it has been 14 years afer all.
 
-=== Basic Terrain Shader
+== Basic Terrain Shader
 press kbd:[CRTL + N] to create a new instance and from the drop-down menu select `shader_terrain` this is a ground material afterall. set the `global ground material type 0` to something tough or soft, you choose. Right click on the empy box alongside it and go from there. This option I think tells the engine what it is and how projectiles,particles and sounds react to it, I'm only guessing here.
 
 scroll down to `Material_0` and select the three dots in on the far right of the window and open up our bitmap file we converted in out root level folder. From there close and save into a newly created folder named `shaders` hit save.
 
-=== Emissives
+== Emissives
 
 some commments on emmisives: 
 
@@ -140,7 +140,7 @@ some commments on emmisives:
 
 ** "The names of the materials don't appear in the scenario_structure_lighting_info though, just a numbered list from 0... but you can open the strucutre_bsp and see the material list and it begins at 1. in the lighting_info file so you can match them up pretty easily to figure out."
 
-=== Water Shader
+== Water Shader
 Create a plane, scale it to size then a apply the scale. from here I named it `water_plane` and gave it a blank material with a custom name.
 
 I copied the `zanzibar_water_awesome` shader from the `zanzibar` shader folder moved it into my maps custom `shaders` directory; I then set the name to be the same material in blender. 
@@ -168,16 +168,16 @@ tool structure-design levels\(yourNewDirectory)\(yourMapName)\structure\(yourMap
 
 This will generate a `.structure_design` file in your root level folder.We then have to load this into the `.scenario` file. Start up guierilla and open our scenario file in a new window. Under the `Structure BSPS` block you will see an empty `structure design` box. simply open up our generated `.structure_design` file in the root level folder, hit save and your done.
 
-== Sapien
+= Sapien
 
 If this is your first time opening sapien, controls to move around in our game window are kbd:[MIDDLE-MOUSE-BTN] and kbd:[W+A+S+D] to move around the map.
 
 Open up our scenario, and with our new level created the first thing we want to set is our sky. In our `Heirachy View` window select sky and under element select none then in our `Properties pallete` select the three dots and open up a `sky.scenery` file from our favourte level. I like `020_base` under `tags\levels\solo\020_base\sky\sky_01`. From here we can set our atmospherics under the scenario folder and scroll down in the properties pallete and select an `.sky_atm_parameters` I like Zanzibar's atmosphereic properties for example.
 
-=== Player spawning
+== Player spawning
 open up our scenario folder in the `Heirachy view` and find a folder named `player starting points` under `Game Data`. selece the `Player starting point` folder and right click on the map in the game windwo to add a spawn point. Hit kbd:[TAB]and you can start playing your new map!
 
-=== AI
+== AI
 AI is relitvely simple to achieve assuming you the map you create has zero open edges, otherwise open up an already compiled map such as `riverworld` or `zanzibar`
 
 With Sapien open navigate to the `edit types` button in the `Hierachy View` window, in the dropdown menu select `bipeds` from there click add and open up a biped file of your choosing under `tags\objects\characters` (It should open it by default). I will select the `elite` biped file.
@@ -189,7 +189,7 @@ I will also need to add some weapons, so again from the dropdown menu select `We
 [NOTE]
 If you want vehicles for your AI you can add them by going through the same process above by seleceting the dropdown menu for `vehicles`.
 
-==== Squads & Zones
+=== Squads & Zones
 
 Halo 3 works with zones and areas for our squads to navigate to. Simply navigate to the `AI` folder in the `Hierachy View` and select `squads`. create a new instance, and with the new instance selected change the team from `default` to `convenant` in the `properties palette`. Expand the squad instance you created and select `fireteams` then create a new instance. Exapnd the fire teams folder and With our `NONE` selected we can simply right click as many starting positions in the `Game Window` to indicate where our new ai will spawn.
 
@@ -206,5 +206,5 @@ To place squads simply right click on our squads instance and select `place squa
 
 Place the squads down again and they should all be moving to their respective zones. 
 
-==== Vehicle AI
+=== Vehicle AI
 If you want vehicles to work you need to change or create a fireteam instance and change the vehicle type to the vehicle you added in the vehicle types we did earlier. It's also important to note the area flags in the `properties palette` to check vehicle area for our vehicles to move along the selected area. It's best if you create a new area and seperate these from infantry to vehicles respectively.  
