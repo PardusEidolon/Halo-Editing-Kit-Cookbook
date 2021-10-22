@@ -19,9 +19,9 @@
 = Introduction
 This is a cookbook guide for the Halo 3 Editing Kit I'm relatively new to the halo modding space but have been lurking in it since the early Halo CE days. It's really exciting to see the halo modding community given access to the tools to make Halo 3 custom edition a reality.
 
-Fortunately for us all the pipeline hasn't really change all too much from what I can remember but the difference being here is that we use ASS (*Amalgam Scene Specification*) instead of `JMS` files. Our tools are all `64-Bit` so we don't get memory erros. The shader tag creation is streamlined so we no longer have to select a template. Out light baking is usually faster and we get to hop in and out of the game state in the new H3 Sapien tool.
+Fortunately for us all the pipeline hasn't really changed all too much from what I can remember but the difference being here is that we use ASS (*Amalgam Scene Specification*) instead of `JMS` files. Our tools are all `64-Bit` so we don't get memory errors. The shader tag creation is streamlined so we no longer have to select a template. Out light baking is usually faster and we get to hop in and out of the game state in the new H3 Sapien tool.
 
-to get started, give {url-fryingpan}[fryingpanproductions] a follow. his tutorials on youtube are a good start to find your footing.
+To get started, give {url-fryingpan}[fryingpanproductions] a watch and follow. His tutorials on youtube are a good start to find your footing.
 
 = H3 Blender level guide
 
@@ -65,7 +65,7 @@ make sure to save the `albedo` into the `bitmaps` folder in our level directory.
 [IMPORTANT]
 Make sure the file format is a `.tiff`. Use photoshop or an online service such as cloud convert {url-cloudconv}[here]. It's also important you match the name of our texture with the name of the ground material in blender.
 
-if you don't want to use a custom shaders you can always refernce one from anyone of your favourite levels in there shaders folder be sure to stick with the reference list located in `tags\levels\shader_collections.txt` and pattern match on the name along with the name of the shader.
+if you don't want to use a custom shaders you can always refernce one from anyone of your favourite levels. Be sure to stick with the reference list located in `tags\levels\shader_collections.txt` and pattern match on the name along with the name of the shader.
 
 for example if I wanted to use `010_sand` from the map waste under `tags\levels\solo\070_waste\shaders\terrain` I would simply look up the prefix in the `shader_collection` file, for waste and in the `materials` panel in blender, reference the shader such as `waste 010_sand` and assign the material to a section in our level.
 
@@ -75,6 +75,7 @@ I'm going to be using custom materials here for my ground layer. So with our two
 I'm not your mommy, This isn't a blender crash course.
 [IMPORTANT]
 Make sure you unwrap your levels and models properly to avoid stretching and weird warping.
+
 == Additions
 
 === Shading & Sharpening
@@ -100,7 +101,7 @@ Im going to convert my custom textures to bitmaps first before I go ahead and im
 tool bitmaps data\levels\(yourNewDirectory)\(yourMapName)\bitmaps
 ----
 
-Or {url-osoyoos}[Osoyoos] I'll be using Osoyoos. There's a `import Bitmap` tab from which we can choose our textures and within a few clicks we will have a bitmap file. Tool should have either created the deafaul sub-directories in our tags folder, given if you set-up your directories correctly.
+Or {url-osoyoos}[Osoyoos], I'll be using Osoyoos. There's a `import Bitmap` tab from which we can choose our textures and within a few clicks we will have a bitmap file. Tool should have either created the default sub-directories in our tags folder, given you set-up your directories correctly.
 
 == Building our scenario
 It's from here we can build our map into a `.scenario`. click on the `import&Light Level` tab select the `.ass` file we generated and make sure to leave it selected at import only, we'll move onto basic baking later on.
@@ -121,25 +122,89 @@ scroll down to the `skies` block and click add. from here you don't really have 
 Scroll on a little further up and input a new entry into the `objects` pallete and name it `cheif` then scroll down to `Player Starting P` click kbd:[ADD] and on the drop-down menu select `cheif inital` from there you can choose what you start with from intial weapons to grenades etc. Hit save and close down out scenario window.
 
 == Shaders
+[IMPORTANT]
+Make sure to name the shader the same as the material you create in blender for the engine to patttern-match.
 
 I still haven't really wrapped my head around how shaders worked, this pipeline is a bit arkane from what im used to in the modern 3d world, it has been 14 years afer all.
 
+=== Basic Terrain Shader
 press kbd:[CRTL + N] to create a new instance and from the drop-down menu select `shader_terrain` this is a ground material afterall. set the `global ground material type 0` to something tough or soft, you choose. Right click on the empy box alongside it and go from there. This option I think tells the engine what it is and how projectiles,particles and sounds react to it, I'm only guessing here.
 
 scroll down to `Material_0` and select the three dots in on the far right of the window and open up our bitmap file we converted in out root level folder. From there close and save into a newly created folder named `shaders` hit save.
 
+=== Emissives
+
+some commments on emmisives: 
+
+* "Unlike CE where you set the emission in a shader tag, this is all controlled from within the scenario_structure_lighting_info where you can choose all materials loaded in the scenario and set their emission values. Then you run lightmaps again."
+
+** "The names of the materials don't appear in the scenario_structure_lighting_info though, just a numbered list from 0... but you can open the strucutre_bsp and see the material list and it begins at 1. in the lighting_info file so you can match them up pretty easily to figure out."
+
+=== Water Shader
+Create a plane, scale it to size then a apply the scale. from here I named it `water_plane` and gave it a blank material with a custom name.
+
+I copied the `zanzibar_water_awesome` shader from the `zanzibar` shader folder moved it into my maps custom `shaders` directory; I then set the name to be the same material in blender. 
+
+With the water material in blender there needs to be a material symbolsuffix `'` at the end of the material to tell the compiler that this is a water surface. 
+
+For example; `yourmaterialname'`
+
 [IMPORTANT]
-Make sure to name the shader the same as the ground material we created in blender for the engine to patttern-match.
+For the water shader to work properly there needs to be multiple uv maps on the `water_plane`. Under the `Object Data Properties` I created at least three and that seemed to have worked (It borked at 4). This is something the c20 guide failed to mention.
+
+I started guerilla and opened up my copied shader file in a new window. I then disabled both `bank alpha` and `foam`. changed `global shape` to depth with a value of `0.6`. from here I played around with the watercolor settings by trying both `pure` and `texture`. To control the murkiness and falloff of the water the `Refracion` block seems to work.
+
+Displacement is a little foriegn, I found that the displacement bitmaps are finicky and crash guerilla when opened. So I just played around with the float values that were open.
+
+=== Water Physics
+This isn't a shader but more a reference to tell the compiler how the world reacts with the water plane you create. you simply have to create a box that matches the size of our water plane and give it some depth. name this new object to `~water_physics00` (the name is subjective here the prefix symbol `~` is the important aspect here the naming as it tells the compiler to treat our box as a water group.)
+
+I then created a new empty with arrows  and named this `#water_direction00` then paired it to my `~water_physics00` object then paired my `~water_physics00` object to the `b_levelroot`. our `#water_direction00` controls as you may have already guess the direction of our water. the hastag prefix symbol tells the compiler to use this object for rotation for direction. I then exported the scene as an `.ass` nothing fancy then re-exported the map in Osyoos. since Osyoos only does `structure` we need to issue a `structure-design` command in the CLI. so run
+
+[source, CMD]
+----
+tool structure-design levels\(yourNewDirectory)\(yourMapName)\structure\(yourMapName).ASS
+----
+
+This will generate a `.structure_design` file in your root level folder.We then have to load this into the `.scenario` file. Start up guierilla and open our scenario file in a new window. Under the `Structure BSPS` block you will see an empty `structure design` box. simply open up our generated `.structure_design` file in the root level folder, hit save and your done.
 
 == Sapien
 
 If this is your first time opening sapien, controls to move around in our game window are kbd:[MIDDLE-MOUSE-BTN] and kbd:[W+A+S+D] to move around the map.
 
-=== Basic Terrain Shader
 Open up our scenario, and with our new level created the first thing we want to set is our sky. In our `Heirachy View` window select sky and under element select none then in our `Properties pallete` select the three dots and open up a `sky.scenery` file from our favourte level. I like `020_base` under `tags\levels\solo\020_base\sky\sky_01`. From here we can set our atmospherics under the scenario folder and scroll down in the properties pallete and select an `.sky_atm_parameters` I like Zanzibar's atmosphereic properties for example.
 
 === Player spawning
-open up our scenario folder in the `Heirachy view` and find a folder named `player starting points` under `Game Data`. selece the `Player starting point` folder and right click on the map to add a spawn point. hit kbd:[TAB]and you can start playing your new map!
+open up our scenario folder in the `Heirachy view` and find a folder named `player starting points` under `Game Data`. selece the `Player starting point` folder and right click on the map in the game windwo to add a spawn point. Hit kbd:[TAB]and you can start playing your new map!
 
 === AI
-N/A Will do this later.
+AI is relitvely simple to achieve assuming you the map you create has zero open edges, otherwise open up an already compiled map such as `riverworld` or `zanzibar`
+
+With Sapien open navigate to the `edit types` button in the `Hierachy View` window, in the dropdown menu select `bipeds` from there click add and open up a biped file of your choosing under `tags\objects\characters` (It should open it by default). I will select the `elite` biped file.
+
+With our bipeds, click the dropdown menu in the `Edit Types` window, select `Charater` from here we can add our ai profiles. they should be in the same folder as the bipeds under the name `ai`. some characters have different classes fro you to choose from I again, will select `elite.character`. 
+
+I will also need to add some weapons, so again from the dropdown menu select `Weapons` and under `objects\weapons` open up a weapon file of your choosing.
+
+[NOTE]
+If you want vehicles for your AI you can add them by going through the same process above by seleceting the dropdown menu for `vehicles`.
+
+==== Squads & Zones
+
+Halo 3 works with zones and areas for our squads to navigate to. Simply navigate to the `AI` folder in the `Hierachy View` and select `squads`. create a new instance, and with the new instance selected change the team from `default` to `convenant` in the `properties palette`. Expand the squad instance you created and select `fireteams` then create a new instance. Exapnd the fire teams folder and With our `NONE` selected we can simply right click as many starting positions in the `Game Window` to indicate where our new ai will spawn.
+
+[NOTE]
+To change direction and position you can by simply expanding the `fire team` instance we created and selected `starting positions`
+
+Selected out `NONE` instance and in the `properties palette` change the chacter type to elite, the normal diff count to how many starting positions you spawned in the game window. give them an intial weapon and some grenades in the grenades type if your feeling daring.
+
+With our squads set up we need to tell where our ai will navigate to or patrol. Navigate to the `Zones` folder and create a new instance. With our new zones instance selected and expanded click on the folder `firing positions`. Back in the game window right click to add some zones create as many as you want really.
+
+Back in the `Hierachy View` select all the elements and with them selected hit kbd:[CTRL + N] to create a new area. Back in the Squads instance (by deafult it should be name `Squads_0`) navigate to the dopdown menu and selected our new zone (by default it should be named `area_0`).
+
+To place squads simply right click on our squads instance and select `place squads`, you may notice nothing happens to fix this you simply have to reset the map under `scenarios` `map reset` or the keyboard shortcut kbd:[ALT + R].
+
+Place the squads down again and they should all be moving to their respective zones. 
+
+==== Vehicle AI
+If you want vehicles to work you need to change or create a fireteam instance and change the vehicle type to the vehicle you added in the vehicle types we did earlier. It's also important to note the area flags in the `properties palette` to check vehicle area for our vehicles to move along the selected area. It's best if you create a new area and seperate these from infantry to vehicles respectively.  
