@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "PardusEidolon",
+      "name": "Jack O'Brien",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38515818?v=4",
+      "profile": "https://parduseidolon.github.io/",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Halo-Editing-Kit-Cookbook",
+  "projectOwner": "PardusEidolon",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
