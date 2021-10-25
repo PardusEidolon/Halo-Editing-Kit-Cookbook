@@ -4,9 +4,9 @@
 :imagesdir: images
 :source-highlighter: highlight.js
 :highlightjs-theme: atom-one-dark
-:icons: font
 :version-label: Halo 3 Edition
-:toc:
+:icons: font
+:toc: 
 :experimental:
 
 :url-haloBlenderTools: https://github.com/General-101/Halo-Asset-Blender-Development-Toolset
@@ -15,6 +15,8 @@
 :url-fryingpan: https://www.youtube.com/watch?v=_1F_YdKAxS8&list=PLey7NkPfa1p4cU5q9TUc-xWU_rT3VxWu2
 :url-reclaimerAdditions: https://c20.reclaimers.net/h3/level-creation/blender-level-creation-additional-info/
 :url-cloudconv: https://cloudconvert.com/login
+:url-reclaimer: https://github.com/Gravemind2401/Reclaimer
+:url-matconventions: https://c20.reclaimers.net/general/source-data/jms/materials/
 
 = Introduction
 This is a cookbook guide for the Halo 3 Editing Kit I'm relatively new to the halo modding space but have been lurking in it since the early Halo CE days. It's really exciting to see the halo modding community given access to the tools to make Halo 3 custom edition a reality.
@@ -207,4 +209,133 @@ To place squads simply right click on our squads instance and select `place squa
 Place the squads down again and they should all be moving to their respective zones. 
 
 === Vehicle AI
-If you want vehicles to work you need to change or create a fireteam instance and change the vehicle type to the vehicle you added in the vehicle types we did earlier. It's also important to note the area flags in the `properties palette` to check vehicle area for our vehicles to move along the selected area. It's best if you create a new area and seperate these from infantry to vehicles respectively.  
+If you want vehicles to work you need to change or create a fireteam instance and change the vehicle type to the vehicle you added in the vehicle types we did earlier. It's also important to note the area flags in the `properties palette` to check vehicle area for our vehicles to move along the selected area. It's best if you create a new area and seperate these from infantry to vehicles respectively. 
+
+= Custom Weapon Models
+
+This was a finicky process, what you will need is the program {url-reclaimer}[Reclaimer] and blender with the plugin {url-haloBlenderTools}[Halo-Asset-Blender-Development-Toolset]. We will be using the CLI directly in some steps of the process.
+
+[NOTE]
+This process is aimed at people who have basic experience with the halo modding pipeline and know how to use blender, don't follow this for a hand holding.
+
+== Initial Setup
+
+To begin we start by jumping directly into tool's command line interface at our root H3EK folder. navigate to the weapons folder under menu:tags[objects > weapons > rifle > battlerifle].
+
+Copy the path into your clipboard, (you can do this by clicking on the windows path bar, left of the search bar in the windows explorer).
+
+With tool open, run the following command;
+
+[source, CMD]
+----
+tool extract-import-info tags\objects\weapons\rifle\battle_rifle\fp_battle_rifle.render_model
+----
+
+Tool should have extracted this to our data folder in the root H3EK.
+
+[NOTE]
+Tools extracts and imports to the file paths reflect that of the tags folder, so make sure to match the paths in the data folder to that of the tags when creating new models and levels etc.
+
+navigate to the extracted model in the data folder, then cut and paste in common location on your main drive. (where only going to use this model as a reference.)
+
+If you want to extract bitmaps for reference you can use reclaimer to do this. make sure its the same model as the one we extracted from tool.
+
+== Blender
+
+Open up blender and import the .JMS file that tool extracted. In the main viewport you'll see our model appear in the viewport.
+
+What we get is an armature, with some bones starting from `frame gun`(which is like our base root) onwards a couple spheres then our model with a handful of vertex groups. Initial thoughts are probably daunting at first, however it's really not at all complicated. The spheres you see are self explanatory. It tells the compiler where the necessary nodes are, like where the hands should be or where the muzzle should flash to the bullets ejecting particle system. As for the bones and vertex and weight groups, there a necessary part for the gun to interact with the hands and the guns functioning parts it'self. It's needed if we want the animations to work smoothly.
+
+One of the first things we want to do is tab into edit mode and merge all the vertices by distance. Tap kbd:[M] and select `merge by distance`, you will have seen that a couple hundred to a couple thousand vert's would have been merged.
+
+Using this method can screw with the weights so It's important to make sure the vertex groups and weights are all weighted correctly.
+
+From here we need to sharpen the model as to avoid rounded edges that shouldn't be rounded. to can grab a reference model from reclaimer of the model we are using to get a grasp at what sides and edges should be sharpened (In {url-reclaimer}[Reclaimer] you will need to export as an .obj, .JMS doesn't retain the sharps for some reason). I will be using a paid plugin called `box-cutter` to cut down on time and mark my edges by an angle of 30 degrees. This gives me a rough guide of what edges should be sharpened then I go through another pass and clean it up a little.
+
+Make sure to save your work in the your work model directory so you don't loose any progress. you will need to set up the respective directories in the data folder. make sure it mirrors the paths of the tag directory so if its a weapon make sure its in menu:tags[objects > weapons > (yourWeapon)], I thought I would get that out of the way. Create a couple new folders named `render`, `collision`, `physics.` We will be exporting our final model into the render folder. We need to otherwise tool will complain.
+
+if theres anything more you want to do from here such as adding attachments repeat the process from above and import the exported model into your scene or model something yourself, make sure to sharpen the edges and name your materials properly.
+
+=== Materials
+
+If you select your materials panel you will see that our model already has a bunch of materials applied to it with some funny symbols at the suffix. you'll note that there are two of the same materials but one with a `)` at the end. This tell the compiler that whatever part of the model has this material "NO NOT COLLAPSE". you apply this to part of the model that you want to have detail retained so that the compiler does not collapse the vertices in the BSP pass of the conversion. There are other symbols that are combined like the ones for displays that have the following suffix `=?` if your doing any UI elements for your guns this is telling it to be a 2 sided transparent object that wont cast shadows to avoid artifacts with the light. For more symbol info refer to the section below.
+
+== Export
+
+When exporting it's important to make sure you have the right game version selected and you import the render model first. Make sure to add `_render` at the suffix so and so forth for your collision and physics models as well, such as `_collision` and `_physics`
+
+=== Additional Notes
+If you're using custom bitmaps the process is identical the above guide for custom levels, I'm not going to repeat my-self here.
+
+I still haven't figured out how physics models work at this stage so stay tuned.
+
+Collision models are really simple just adjust it for size and export as a collision in the `collision` folder.
+
+== Conversion
+
+Converting is really easy, we just list our directory in Osyoos and if you set up your directories correctly it should be straight forward. Default settings convert the file in draft mode so to push for a final render check accurate render and PRT Render for light baking.
+
+== Tags
+
+Depending on the gun you chose as a base you can copy the original files such as the `.physics_model` and the `.collision_model`, `.model_animation_graph` also copy the fx, projectiles,fx,damage_effects as well as the shaders and bitmaps if you just stuck to the default if your using custom bitmaps just copy the shaders folder to use as a template for your custom bitmaps.
+
+== Editing tags
+
+The only important thing is just to make sure the `.model` file has the right files linked to the files we just created and making sure the all the files in the fields of our `.weapon` and `.model` tags match that of our new directory with our copied files so we don't destroy the original templates we copied from.
+
+=== Custom shaders
+
+If you used Ossoyos to convert your bitmaps then just replace the old bitmaps in out copied shaders with the new ones. you only have to replace the shader bitmaps of with the materials we had applied in blender.
+
+For the numbered displays materials for guns you will need to compile the ones and tens into a single tag, to do this I created a new folder in my bitmaps folder named it numbers or compass compied the numbers bitmaps from the `assualt rilfe` or `battlerilfe` for example then ran the following command in Tool;
+
+[source, CMD]
+----
+tool import-bitmap-folder-as-single-tag objects\weapons\rifle\(your_model)\bitmaps\numbers
+----
+
+I then checked the bitmaps and replaced the bitmap in it's respective shader
+
+== Sapien
+
+To test to see if our wepaon import process worked correctly, you can either spawn it here byt going menu:EditTypes[add>(your_custom_weapon)>youWeaponFile.weapon]. select the weapons folder under menu:objects[items>weapons] and right click in the game window to add an instance then in the properties pallete select your new gun. Hit kbd:[Tab] and you should be all good to go assuming it went smoothly. You can also change the `primary weapon` field in a levels `.scenario` tag under `Player Starting P` make it a weapon you spawn with when you enter into the game state.
+
+=== Known issues
+
+The collision and physics models don't seem to work and give a (not collidiable) or (not physical) error in the output window. Have yet to figure this out.
+
+= Useful Information
+
+== Tool
+
+Here are some useful commands I use to in my workflow process.
+
+[source, CMD]
+----
+tool extract-import-info (tags)\objects\<somemodel.render> or <.collision> or <.physics> <1>
+
+tool import-bitmap-folder-as-single-tag <source_directory> <2>
+
+tool -help <3>
+----
+<1> A useful command to extract .JMS files from the halo tags folder for blender import.
+<2> Exactly what the title says. useful for UI elements on guns I found
+<3> Lists all available commands.
+
+= Material Symbols
+
+Here are some material symbols you might see a lot when working with halo models.
+
+=== Halo 3 Material Symbols
+
+[horizontal]
+
+*%* :: *Two-sided property*. Two-sided path findable geometry. This flag or shader symbol when applied to a material that is applied to a face or surface renders both sides of the surface instead of just the side that the normal is facing.
+*=* :: *No Shadow*. Does not cast real time shadows.
+*)* :: *Precise*. Points and triangles are precise and will not be fiddled with in the BSP pass.
+*@* :: *Collision Only*, Non-rendered geometry.
+*?* :: *Two-sided Transparent*. Two-sided collidable geometry that is not connected to or touching one-sided geometry.
+*$* :: *Fog Plane*. Non-collidable fog plane. This shader symbol when applied to a material that is applied to a face or surface makes the surface not be rendered. The faces acts as a fog plane that can be used to define a volumetric fog region.
+*#* ::  *One-sided Transparent*. One-sided but non-manifold collidable geometry.
+
+for more on this click {url-matconventions}[here]
