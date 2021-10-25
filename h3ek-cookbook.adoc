@@ -260,16 +260,18 @@ if theres anything more you want to do from here such as adding attachments repe
 
 If you select your materials panel you will see that our model already has a bunch of materials applied to it with some funny symbols at the suffix. you'll note that there are two of the same materials but one with a `)` at the end. This tell the compiler that whatever part of the model has this material "NO NOT COLLAPSE". you apply this to part of the model that you want to have detail retained so that the compiler does not collapse the vertices in the BSP pass of the conversion. There are other symbols that are combined like the ones for displays that have the following suffix `=?` if your doing any UI elements for your guns this is telling it to be a 2 sided transparent object that wont cast shadows to avoid artifacts with the light. For more symbol info refer to the section below.
 
-== Export
+== Collision
+Collision models are really simple just adjust it for size or create a new model and export as a collision in the `collision` folder. make sure you name the model the same as the render but with the `@` as the prefix. It's also important the bone counts are the same and your only using one vertex group which is the `frame gun` and it has a weight of `1`. Make sure there are no open edges and uncheck edg
 
-When exporting it's important to make sure you have the right game version selected and you import the render model first. Make sure to add `_render` at the suffix so and so forth for your collision and physics models as well, such as `_collision` and `_physics`
+== Physics
+I took the collision model I modeled, changed the viewport color with the material metal and simply just changed the prefix to `$`. made sure the name matched with everything in the project and voila.
 
 === Additional Notes
 If you're using custom bitmaps the process is identical the above guide for custom levels, I'm not going to repeat my-self here.
 
-I still haven't figured out how physics models work at this stage so stay tuned.
+== Export
 
-Collision models are really simple just adjust it for size and export as a collision in the `collision` folder.
+When exporting it's important to make sure you have the right game version selected and you import the render model first. Make sure to add `_render` at the suffix so and so forth for your collision and physics models as well, such as `_collision` and `_physics`
 
 == Conversion
 
