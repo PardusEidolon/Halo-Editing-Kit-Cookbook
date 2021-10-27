@@ -9,8 +9,8 @@ jobs:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@master
-      - name: Create a Release
-        uses: elgohr/Github-Release-Action@master
+      - name: Github Release
+        uses: elgohr/Github-Release-Action@v3.1
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           with:
