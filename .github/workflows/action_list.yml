@@ -13,7 +13,7 @@ jobs:
         uses: elgohr/Github-Release-Action@v3.1
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          with:
+        with:
             args: MyReleaseMessage
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
