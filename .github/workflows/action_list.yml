@@ -1,8 +1,5 @@
 name: H3Ek-Workflow
-on: 
-  push:
-    tags:
-      - 'v*'
+on: [push]
 jobs:
   action-test:
     runs-on: ubuntu-latest
