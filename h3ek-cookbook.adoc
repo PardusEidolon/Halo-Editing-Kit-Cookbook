@@ -325,7 +325,7 @@ tool -help <3>
 <3> Lists all available commands.
 
 === Decorator Brush
-In Order to Use the Decorator Brush you will need to generate a new merged scenario tag in the `.scenario` folder using Tool. 
+In Order to Use the Decorator Brush you will need to generate a new merged scenario tag in the `levels` folder using Tool. 
 
 This Command Will Create a new Merged .scenario tag using the current selected scenario. <1>
 
