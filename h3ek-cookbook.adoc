@@ -324,6 +324,20 @@ tool -help <3>
 <2> Exactly what the title says. useful for UI elements on guns I found
 <3> Lists all available commands.
 
+=== Decorator Brush
+In Order to Use the Decorator Brush you will need to generate a new merged scenario tag in the `.scenario` folder using Tool. 
+
+This Command Will Create a new Merged .scenario tag using the current selected scenario. <1>
+
+When using the Merged scenario you will now be able to save the changes you make when using The Decorator Brush.
+
+The Command for Generating a Scenario Tag is: 
+
+[source, CMD]
+----
+tool scenario-merge levels\(your_level_type)\(your_level_name)\(your_level_name) <1>
+----
+
 = Material Symbols
 
 Here are some material symbols you might see a lot when working with halo models.
