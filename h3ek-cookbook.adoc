@@ -338,7 +338,6 @@ tool scenario-merge levels\(your_level_type)\(your_level_folder)\(your_level_nam
 ----
 <4> The level type is the 'folder name' that bungie used to organize level types in the levels folder. The Known Level Types are: Solo, Multi, Ui. also known as Campaign, Multiplayer, Mainmenu.
 
-<5> Your Chosen Level Folder contains the scenario tag you want to merge.
 
 
 
