@@ -2,13 +2,14 @@ name: H3Ek-Workflow
 on:
   push:
     tags:
-      - 'v*'
+      - '*'
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Build release
       - uses: actions/checkout@v2
-      - uses: ncipollo/release-action@v1
+      - name: Build release
+        uses: ncipollo/release-action@v1
         with:
+          draft: true
           token: ${{ secrets.PERSONAL_TOKEN }}
