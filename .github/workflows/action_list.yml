@@ -17,9 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: job1
     steps:
-      - name: Create GitHub release
-        uses: Roang-zero1/github-create-release-action@master
-        with:
-          version_regex: ^v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+
+      - name: Release build
+        uses: xresloader/upload-to-github-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "*.adoc; *.md"
+          tags: true
+          draft: true
+          prerelease: true
+          branches: [master]
