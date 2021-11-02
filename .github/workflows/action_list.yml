@@ -22,7 +22,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "*.adoc"
+          file: "h3ek-cookbook.adoc"
           tags: true
           draft: true
           prerelease: true
