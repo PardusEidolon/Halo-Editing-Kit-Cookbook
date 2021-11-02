@@ -26,4 +26,4 @@ jobs:
           tags: true
           draft: true
           prerelease: true
-          branches: [master]
+          branches: master
