@@ -20,10 +20,9 @@ jobs:
       - name: Release build
         uses: xresloader/upload-to-github-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         with:
-          file: "*.adoc; *.md"
           tags: true
           draft: true
           prerelease: true
-          branches: [master]
+          branches: master
