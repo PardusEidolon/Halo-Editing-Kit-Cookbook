@@ -2,7 +2,7 @@ name: H3Ek-Workflow
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 jobs:
   publish:
     runs-on: ubuntu-latest
