@@ -324,6 +324,23 @@ tool -help <3>
 <2> Exactly what the title says. useful for UI elements on guns I found
 <3> Lists all available commands.
 
+=== Decorator Brush
+In Order to Use the Decorator Brush you will need to generate a new merged scenario tag in the `levels` folder using Tool. 
+This will give you a new '.scenario' tag that has all the information required for the level.
+
+When using the Merged scenario you will now be able to save the changes you make when using The Decorator Brush.
+
+The Command for Generating a Scenario Tag is: 
+
+[source, CMD]
+----
+tool scenario-merge levels\(your_level_type)\(your_level_folder)\(your_level_name)
+----
+<4> The level type is the 'folder name' that bungie used to organize level types in the levels folder. The Known Level Types are: Solo, Multi, Ui. also known as Campaign, Multiplayer, Mainmenu.
+
+
+
+
 = Material Symbols
 
 Here are some material symbols you might see a lot when working with halo models.
