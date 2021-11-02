@@ -1,6 +1,6 @@
 # Halo 3 Editing Kit Cook-Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This is a halo cook book for the new halo 3 tools that were released, This is me jotting my notes down and making sure that I document the process so that I have something to come back too.
@@ -15,6 +15,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://parduseidolon.github.io/"><img src="https://avatars.githubusercontent.com/u/38515818?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jack O'Brien</b></sub></a><br /><a href="#infra-PardusEidolon" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/A267-dev"><img src="https://avatars.githubusercontent.com/u/77297903?v=4?s=100" width="100px;" alt=""/><br /><sub><b>A267</b></sub></a><br /><a href="https://github.com/PardusEidolon/Halo-Editing-Kit-Cookbook/commits?author=A267-dev" title="Documentation">📖</a></td>
   </tr>
 </table>
 
