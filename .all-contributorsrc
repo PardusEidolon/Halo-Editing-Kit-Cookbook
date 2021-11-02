@@ -13,6 +13,15 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "A267-dev",
+      "name": "A267",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77297903?v=4",
+      "profile": "https://github.com/A267-dev",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
