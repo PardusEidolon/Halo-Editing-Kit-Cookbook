@@ -337,8 +337,8 @@ The command for generating a scenario tag is;
 tool scenario-merge levels\(your_level_type)\(your_level_folder)\(your_level_name) 
 ----
 <1> The level type is the 'folder name', Bungie used this to organize level types in the levels folder. The Known Level Types are: `solo`, `multi`, `dlc`, `ui`. also known as `campaign`, `multiplayer` and `main-menu`.
-<2> I would highly recommend creating a 'custom' folder within the level types folder to save your custom maps
-<3> ODST Maps use the level type 'atlas'
+<2> I would highly recommend creating a `custom` folder within the level types folder to save your custom maps
+<3> ODST Maps use the level type `atlas`
 ----
 Examples of Scenario Merge Commands:
 tool scenario-merge levels\solo\010_jungle\010_jungle
