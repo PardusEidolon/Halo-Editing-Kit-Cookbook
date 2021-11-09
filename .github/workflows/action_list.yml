@@ -1,15 +1,15 @@
-name: H3Ek-Workflow
-on:
-  push:
-    tags:
-    - '*'
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build release
-        uses: ncipollo/release-action@v1
-        with:
-          draft: true
-          token: ${{ secrets.PERSONAL_TOKEN }}
+# name: H3Ek-Workflow
+# on:
+#   push:
+#     tags:
+#     - '*'
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Build release
+#         uses: ncipollo/release-action@v1
+#         with:
+#           draft: true
+#           token: ${{ secrets.PERSONAL_TOKEN }}
