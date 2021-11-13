@@ -1,0 +1,138 @@
+= H2 Editing Kit Tool Commands List
+:author: A267-dev
+:email: 
+:imagesdir: images
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+:version-label: Halo 2 Edition
+:icons: font
+:toc: 
+:experimental:
+
+:url-TagTool: https://github.com/TheGuardians/TagTool
+
+= Introduction
+This is a Generalized List of almost every command you'll find in `Tool`
+I will eventually Write up some supporting documentation providing additional context to every command to help you better understand their use-cases.
+there are also several other great community CLI Tag Editors out there such as {url-TagTool}[TagTool] that are very useful to have when modding Halo.
+
+[NOTE]
+This List is Not Final and is Subject to Change as Community Research Continues.
+
+= Command List for tool.exe (Use CMD)
+
+[source, CMD]
+----
+usage: tool verb <required options..> [non-required options]
+  bitmaps <source-directory> [type] [debug-plate?]
+  build-cache-file <scenario> [platform] [flags]
+  build-convolution-map <tiff-file> <passes> <blur-subpasses> <e> <scale>
+  build-gradient-map <tiff-file> <width> <height> <exponent> <options>
+  build-noise-map <tiff-file> <width> <height> <low-freq-skip> <high-freq-skip> <roughness> <blur-passes> <random-seed>
+  build-plasma-control-map <tiff-file> <k> <e>
+  build-quadratic-map <tiff-file>
+  build-trace-map <tiff-file> <options> <time-bias> <time-scale> <min-delta-time> <max-delta-time>
+  bulk-collision <jmi-file>
+  bulk-import-crates <jmi-file>
+  bulk-import-crates-folder <source-directory>
+  bulk-import-model-folder <source-directory>
+  bulk-import-models <jmi-file>
+  bulk-import-scenery <jmi-file>
+  bulk-import-scenery-folder <source-directory>
+  bulk-physics <jmi-file>
+  bulk-render <jmi-file>
+  camera-track <source-file>
+  collision <source-directory>
+  convert-pixel-shaders
+  convert-tiled-tiff <input-tiff-file> <output-tiff-file>
+  count-all-class-sounds <root-path>
+  count-class-sounds <sound-class>
+  count-sound-tags <root-path>
+  dialogue-globals-import
+  dialogue-import <root-directory>
+  dump-tag-table <tag-type>
+  dump-tiff-to-header <quantization-factor> <tiff-file> <constant-prefix-string> <output-file>
+  dump-uncompressed-sounds <root-path>
+  export-tag-to-xml <tag-file> <output-file>
+  export-tags-to-xml <export-tag-to-xml-params-listing>
+  export-windows-font <output-directory> <font-file-(optional)> <typeface-name> <point-size>
+  extract-collision-data <collision_model>
+  extract-hs-scripts <scenario_hs_source_file-name-substring>
+  extract-lpc-data <sound-file>
+  extract-physics-data <physics_model>
+  extract-render-data <render_model>
+  extract-structure-data <scenario_structure_bsp>
+  extract-unicode-strings <multilingual_unicode_string_list>
+  fbx-to-ass <fbx> <ass>
+  fbx-to-jma <fbx> <jma> [Start-frame] [Last-frame]
+  fbx-to-jmi <fbx> <jmi>
+  fbx-to-jms <render,collision,physics-or-all> <fbx> <jms>
+  fix-model-materials <root-directory> <material-name>
+  fix-tags <action>
+  fp-model-animations <source-directory> <character-directory> <weapon-directory> [flags]
+  import-damage-table
+  import-decorator-set <jmi-file>
+  import-particle-model <jmi-file>
+  lightmap-farm <scenario> <bsp-name> <quality-setting> <priority> <branch>
+  lightmap-farm-update-sql <scenario-directory> <bsp-name> <sql_record_id>
+  lightmap-rendermodel <render-model>
+  lightmaps <scenario> <bsp-name> <quality-setting>
+  lightmaps-debug <scenario> <bsp-name> <quality-setting> <begin-light-index> <end-light-index>
+  lightmaps-farm-merge <scenario> <bsp-name> <worker-count>
+  lightmaps-farm-worker <scenario> <bsp-name> <quality-setting> <worker-index> <worker-count>
+  lightprobes <scenario> <bsp-name> <quality-setting>
+  mission-dialogue-import <root-directory>
+  model-animation-count <source-directory>
+  model-animation-reset-compression <model-animation-graph>
+  model-animation-status <source-directory>
+  model-animations <source-directory> [flags]
+  monitor-bitmaps
+  monitor-data-and-tags-bitmaps
+  monitor-models
+  monitor-structures
+  new-strings <source-directory>
+  old-physics <source-directory>
+  pack-unicode-strings <language> <tag-list-file>
+  physics <source-directory>
+  pixel-shaders <platform>
+  plate <source-directory> [raw?]
+  process-sounds <source-directory> <path-spec> <command> <value>
+  prt-simulation <render-model>
+  rebuild-scenario-scripts <scenario>
+  rebuild-structure-audibility <structure>
+  reimport-model-animations
+  reimport-sounds <source-directory>
+  reimport-sounds-single <source-file>
+  reimport-sounds-to-opus <source-directory>
+  reimport-sounds-to-opus-single <source-directory>
+  render <source-directory> [accurate?] [run-prt?]
+  replace-font-char <font-file> <tiff-file> <utf16-code>
+  scenario-analyze <scenario> <inspection-type>
+  script-doc [function-or-global-name]
+  set-sound-class <source-directory> <path-spec> <new-sound-class>
+  sound-looping <source-directory> <type> [compression]
+  sound-looping-scenery <source-directory> <type> [compression]
+  sound-multi-layer <source-directory> <type> [compression]
+  sound-single <source-file> <type> [compression]
+  sounds-music <source-directory> <type> [compression]
+  sounds-one-shot <source-directory> <type> [compression]
+  sounds-single-layer <source-directory> <type> [compression]
+  sounds-single-mixed <source-directory> <type> [compression]
+  strip-single-tag-file <tag>
+  structure <scenario-directory> <bsp-name> [verbose?]
+  structure-analyze <scenario_structure_bsp>
+  structure-compatible <scenario-directory> <bsp-name>
+  structure-compatible-from-jms <jms-file>
+  structure-from-jms <jms-file> [verbose?]
+  structure-new <scenario-directory> <bsp-name> [verbose?]
+  structure-new-from-ass <ass-file> [verbose?]
+  structure-plane-debug <scenario-directory> <bsp-name>
+  structure-plane-debug-generate <scenario-directory> <bsp-name>
+  tag-file-report <tag-file>
+  verify-sound-folder <root-path>
+  verify-tag-load <tag-file>
+  version
+  vertex-shader <platform> <src-platform> <shader>
+  vertex-shaders <platform> <src-platform>
+  windows-font <font-file> <-ea:n-where-n-is-a-number-(optional)>
+----
