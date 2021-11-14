@@ -18,6 +18,7 @@
 :url-reclaimer: https://github.com/Gravemind2401/Reclaimer
 :url-matconventions: https://c20.reclaimers.net/general/source-data/jms/materials/
 
+
 = Introduction
 This is a cookbook guide for the Halo 3 Editing Kit I'm relatively new to the halo modding space but have been lurking in it since the early Halo CE days. It's really exciting to see the halo modding community given access to the tools to make Halo 3 custom edition a reality.
 
@@ -42,13 +43,23 @@ this is where we will store our blender save file.
 
 Set up a default scene, use the metric system for unit measurements and scale then increase the view clip start from `0.01` to `1` and clip end from `1000` to `10000000` to prevent our models from clipping through the ground.
 
-Im going to assume you know blender here and get straight to the meat & gravy. Make sure you have the Halo Blender tools extension installed {url-haloblendertools}[here.] I also have Osyoos installed which makes the modding pipeline a little bit faster, you can download that {url-osoyoos}[here.]
+image::guide-level-blender-1.jpg[view clipping,200,200]
+
+This guide is targeted for people who are familiar with the basics of blender. Make sure you have the Halo Blender tools extension installed {url-haloblendertools}[here.] I also have Osyoos installed which makes the modding pipeline a little bit faster, you can download that {url-osoyoos}[here.]
 
 With that out of the way I want to make sure that I have `Halo 3` checked in my `Halo Scene Properties` under `Scene`. from there I can start modeling.
+
+image::guide-level-blender-2.jpg[scene properties]
 
 I'm going to create a basic cube and name it `b_levelroot` by hitting the shortcut kbd:[F2]. From here I can create another box and change the dimension in the side-bar to `5000m x, 5000 y, 3500 z`. kbd:[CTRL + A] and apply scale.
 
 let's name this to `level`. Select our `b_levelroot` then select our level box and kbd:[CTRL + P] to `set parent to object (keep transform)`.
+
+image::guide-level-blender-3.gif[levelroot]
+
+Select the `level` object in the outliner and Press kbd:[tab] to enter edit mode. whilst in edit mode select all faces by pressing kbd:[A]. With all the faces of our object selected the normals need to be flipped. Press kbd:[tab + N] to bring up the shortcut menu for normals and select flip. With our normals flipped we can turn on back-face culling; this allows us to see inside our objects with the normals facing inwards.
+
+image::guide-level-blender-4.gif[flip_normals]
 
 from here I've found that if you want to add anything from here such as instanced geometry you can, as it might be a lot easier to model your map without having to stich the entire thing to prevent open edges when we go to export.
 
@@ -62,6 +73,8 @@ Make sure to stay within the bounds of the sealed level box we created, think of
 
 Go into the `materials` panel and create a new material and name it `+sky` give it a basic solid colour and create a second material and name it `(yourMapName)_ground`. I'm going to go find a tile-able terrain texture I found in Quixel bridge and use that as my ground texture.
 
+image::guide-level-blender-5.jpg[custom_material]
+
 make sure to save the `albedo` into the `bitmaps` folder in our level directory.
 
 [IMPORTANT]
@@ -71,48 +84,65 @@ If you don't want to use a custom shaders you can always reference one from anyo
 
 for example if I wanted to use `010_sand` from the map waste under `tags\levels\solo\070_waste\shaders\terrain` I would simply look up the prefix in the `shader_collection` file, for waste and in the `materials` panel in blender, reference the shader such as `waste 010_sand` and assign the material to a section in our level.
 
-I'm going to be using custom materials here for my ground layer. So with our two materials set up, assign `+sky` to all polygons except the bottom. then with our bottom polygon selected assign our ground material.
+image::guide-level-blender-6.jpg[ingame_material]
+
+I'm going to be using in-game shader materials here for my ground layer. So with our two materials set up, assign `+sky` to all polygons. Then with our ground material selected in the materials panel press kbd:[tab] to enter edit mode and select the bottom polygon and assign our ground material. Exit edit mode and save.
 
 === UV Unwrapping
-I'm not your mommy, This isn't a blender crash course.
-[IMPORTANT]
 Make sure you unwrap your levels and models properly to avoid stretching and weird warping.
+
+If your using in-game textures, there is a `shaders_collections` reference sheet under `H3EK\tags\levels`. Depending on the level you can use Reclaimer to extract the bitmaps from the `render_model`.   
 
 == Additions
 
 === Shading & Sharpening
-Because Blender doesn't do smoothing groups we can use sharpening to give the illusion of smoothed out geometry. I've found that the edge-split modifier creates problems as it opens edges which is what we don't want. Blender documentation states that it's kept for historical/compatibility reasons and should only be used if you need the topology changes. we can achieve better shading by selecting the edges we want and marking them sharp (kbd:[SHIFT + E] to bring up the menu). make sure to `right click` and shade smooth.
+Because Blender doesn't do smoothing groups we can use sharpening to give the illusion of smoothed out geometry. I've found that applying the edge-split modifier before export creates problems as it opens edges which is what we don't want. Blender documentation states that it's kept for historical/compatibility reasons and should only be used if you need the topology changes. Although it may be a depreciated modifier we can achieve sharp shading regardless by selecting the edges we want and marking them sharp (kbd:[SHIFT + E] to bring up the menu). make sure to `right click` and shade smooth.
+
+image::guide-level-blender-7.gif[sharpening]
 
 === Instanced Geometry
 If you wish to add anymore geometry we simply just create a mesh and parent it to the `b_levelroot` make sure to name it by giving it the `%` prefix then your suffix `(object name)`.
 
+image::guide-level-blender-9.gif[instanced_geo]
+
+Make sure to give this geo the same conditioning as out main level such as sharpening, UV Unwrapping and applied materials.
+
 Additional information such as extra skies, water etc you can check it {url-reclaimerAdditions}[here.]
+
+=== Scaling
+To adjust for proportions and get a sense of how big your map will be, the blender halo tool addon provides us with a scale model helper in the blender tool bar. Press kbd:[N] to bring up the right hand tool bar and select `halo tool` with the tab opened; look down to where it says `scale model helper`. You will see three tabs each with own drop down box menus. `game`,`uni type` and `Model` For consistency it's probably best if you stick to the game you plan to import the map into, in our case its's halo 3. 
+
+Generate a basic biped model into our scene buy selecting character in `unit type` clicking on the dropdown menu for model. From there it's your choice weather or not to got with any one model based on the choices given to you. For default scaling it's best to just choose the `Master Chief` model. Given it's the main biped we control as the player and most objects are universally scaled around it.  
+
+image::guide-level-blender-8.gif[scaling]
 
 = Exporting
 
-Export your model as an `.ass` and make sure your settings are set to halo 3. Disable the edge-split modifier and leave everything at default. save the `.ass` into the structure folder in our `data\levels\(yourNewDirectory)\(yourMapName)\structure` and hit export.
+Export your model as an `.ass` and make sure your settings are set to halo 3 and leave everything at default deselect the edge modifier. Save the `.ass` into the structure folder in our `data\levels\(yourNewDirectory)\(yourMapName)\structure` and hit export.
 
 Save the project file and exit.
 
 = Converting
 
-Im going to convert my custom textures to bitmaps first before I go ahead and import my level. We can do this either via the CLI `tool` by running the command
+When using custom textures we need to convert them to bitmaps first before you go ahead and import them into your level. We can do this either via the CLI `tool` by running the command
 
 [source, CMD]
 ----
 tool bitmaps data\levels\(yourNewDirectory)\(yourMapName)\bitmaps
 ----
 
-Or {url-osoyoos}[Osoyoos], I'll be using Osoyoos. There's a `import Bitmap` tab from which we can choose our textures and within a few clicks we will have a bitmap file. Tool should have either created the default sub-directories in our tags folder, given you set-up your directories correctly.
+Or {url-osoyoos}[Osoyoos], I'll be using Osoyoos. There's a `import Bitmap` tab from which we can choose our textures and within a few clicks we will have all our bitmap files. Tool should have either created the default sub-directories in our tags folder, given you set-up your directories correctly.
 
 = Building our scenario
-It's from here we can build our map into a `.scenario`. click on the `import&Light Level` tab select the `.ass` file we generated and make sure to leave it selected at import only, we'll move onto basic baking later on.
+It's from here we can build our map into a `.scenario`. click on the `import& Level` tab and click on `browse` to open up the `.ass` file we generated and make sure to leave it selected at import only, we'll move onto basic baking later on.
+
+image::guide-level-blender-10.gif[.ASS_conversion]
 
 = Guerilla
 We are now about the enter the tag editing system that is `guerilla` we use this to manipulate and create stuff for halo to recognize.
 
 == Scenario Edit's
-Assuming we didn't run into any open edge errors (you can ignore the degenerate triangles for now) it's time to jump into the tag editor know as `guerilla` from there open up your scenario file under `tags\levels\(yourNewDirectory)\(yourMapName)` and change the type to multiplayer and check; 
+Assuming we didn't run into any open edge errors (if you did you it not a problem unless you want to generate `ai pathfinding` can always go back and seal them this may take time,you can also ignore the degenerate triangles for now) it's time to jump into the tag editor know as `guerilla` from there open up your scenario file under `tags\levels\(yourNewDirectory)\(yourMapName)` and change the type to multiplayer and check; 
 
 * [x] don't strip path-finding
 
