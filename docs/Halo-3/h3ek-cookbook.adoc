@@ -43,13 +43,13 @@ this is where we will store our blender save file.
 
 Set up a default scene, use the metric system for unit measurements and scale then increase the view clip start from `0.01` to `1` and clip end from `1000` to `10000000` to prevent our models from clipping through the ground.
 
-image::guide-level-blender-1.jpg[view clipping,200,200]
+image::guide-level-blender-1.JPG[view clipping,200,200]
 
 This guide is targeted for people who are familiar with the basics of blender. Make sure you have the Halo Blender tools extension installed {url-haloblendertools}[here.] I also have Osyoos installed which makes the modding pipeline a little bit faster, you can download that {url-osoyoos}[here.]
 
 With that out of the way I want to make sure that I have `Halo 3` checked in my `Halo Scene Properties` under `Scene`. from there I can start modeling.
 
-image::guide-level-blender-2.jpg[scene properties]
+image::guide-level-blender-2.JPG[scene properties]
 
 I'm going to create a basic cube and name it `b_levelroot` by hitting the shortcut kbd:[F2]. From here I can create another box and change the dimension in the side-bar to `5000m x, 5000 y, 3500 z`. kbd:[CTRL + A] and apply scale.
 
@@ -73,7 +73,7 @@ Make sure to stay within the bounds of the sealed level box we created, think of
 
 Go into the `materials` panel and create a new material and name it `+sky` give it a basic solid colour and create a second material and name it `(yourMapName)_ground`. I'm going to go find a tile-able terrain texture I found in Quixel bridge and use that as my ground texture.
 
-image::guide-level-blender-5.jpg[custom_material]
+image::guide-level-blender-5.JPG[custom_material]
 
 make sure to save the `albedo` into the `bitmaps` folder in our level directory.
 
@@ -84,7 +84,7 @@ If you don't want to use a custom shaders you can always reference one from anyo
 
 for example if I wanted to use `010_sand` from the map waste under `tags\levels\solo\070_waste\shaders\terrain` I would simply look up the prefix in the `shader_collection` file, for waste and in the `materials` panel in blender, reference the shader such as `waste 010_sand` and assign the material to a section in our level.
 
-image::guide-level-blender-6.jpg[ingame_material]
+image::guide-level-blender-6.JPG[ingame_material]
 
 I'm going to be using in-game shader materials here for my ground layer. So with our two materials set up, assign `+sky` to all polygons. Then with our ground material selected in the materials panel press kbd:[tab] to enter edit mode and select the bottom polygon and assign our ground material. Exit edit mode and save.
 
