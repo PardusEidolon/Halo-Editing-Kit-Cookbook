@@ -1,0 +1,128 @@
+= H3 Editing Kit Cookbook
+:author: PardusEidolon
+:email: jack@yumi.ai
+:imagesdir: images
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+:version-label: Halo Reach Edition
+:icons: font
+:toc: 
+:experimental:
+
+:url-haloBlenderToolsReach: https://github.com/ILoveAGoodCrisp/Halo-Asset-Blender-Development-Toolset
+:url-osoyoos: https://github.com/num0005/Osoyoos-Launcher
+:url-theReclaimersLibrary: https://c20.reclaimers.net/
+:url-fryingpan: https://www.youtube.com/watch?v=_1F_YdKAxS8&list=PLey7NkPfa1p4cU5q9TUc-xWU_rT3VxWu2
+:url-reclaimerAdditions: https://c20.reclaimers.net/h3/level-creation/blender-level-creation-additional-info/
+:url-cloudconv: https://cloudconvert.com/login
+:url-reclaimer: https://github.com/Gravemind2401/Reclaimer
+:url-matconventions: https://c20.reclaimers.net/general/source-data/jms/materials/
+:url-hudmessages: https://gist.github.com/PardusEidolon/8bfca22b567763fc25546b8bf31213e4
+:url-fontPacker: https://github.com/Lord-Zedd/FontPackager
+
+= Introduction
+This is a cookbook guide for the Halo Reach Editing Kit I'm relatively new to the halo modding space but have been lurking in it since the early Halo CE days. It's really exciting to see the halo modding community given access to the tools to make Halo 3 custom edition a reality.
+Fortunately for us all the pipeline hasn't really changed all too much from what I can remember but the difference being here is that we use GR2 (*Granny Files*) instead of `JMS` files. Our tools are all `64-Bit` so we don't get memory errors. The shader tag creation is streamlined so we no longer have to select a template. 
+Out light baking is usually faster and we get to hop in and out of the game state in the HR Sapien tool.
+
+= Halo Reach Asset Creation Guide
+
+[NOTE]
+This is just rough notes here at the momement
+
+=== Prerequisite
+Make sure you have python installed and clone and build {url-haloBlenderToolsReach}[this] repo with the command `python build/create_zip.py` in the cloned root directory.
+install into blender and add the path to your HREK tools.
+
+=== File Directories
+directories are the same as for halo 3 except for us we get the blender tool to do it all for us so just save your blender scene in the root of your custom directory.
+We need to set up our new directories first. Go to your HREK root and under `data\levels\(yourNewDirectory)\(yourAssetName)`.
+
+=== Export Import
+
+- use reclaimer to export the render models
+- export as amf
+- import amf into blender making sure to set units to 3DS Max
+
+=== Modelling
+- Every object must have a armature all object must be paired to this.
+- set your global halo scene properties to reach
+- make sure to match the vertex groups usin weight paints on the parts of your object.
+- create a box and name it `@your model name here` this is your collision
+- create a roughly shape object close to the original and name it `$your model name here` this is your physics
+- any materials to the render model must have the shaders declared in the shader path under the materials tab
+- open the side tool tab and hit export!
+- make sure to choose weapon and import to game
+
+=== Weapon Hud icons
+- your icons are located in `maps/fonts`
+    - each file needs to be changed with names such as `font_package{2..3}` and `font_package_icon{2..3}`
+- download {url-fontpacker}[font packer]
+- open up font `font_package.bin`
+- from here you only need to change the `tv_nord_hud-15`
+- you can add a field by right clicking or you can export by selecting an icon and selecting a directory
+- when adding new fields make sure the unicode is in succession for example if the last icon is E144 then you want to
+name your new unicode E145.
+- make when importing icons that they match the sizes of the icons in font_packages 1..3 and make sure to import your new
+icon into each package file with the correct sizes!
+- once you have your icons you need to copy the hexa-decimal code in the font `packagex2.bin` file you can do this by
+double clicking on your new icon.
+- download {url-hudmessages}[this file] and place it in your data folder under `ui/chud/hud/hud_messages.txt`
+- open your favourite text editor program and copy these lines such as:
+
+[source,bash]
+----
+EXAMPLE_PICKUP = "Hold  to pick up\r\n"
+EXAMPLE_SWAP = "Hold  to swap for\r\n"
+EXAMPLE_PICKED_UP = "Picked up a EXAMPLE"
+EXAMPLE_AMMO_SINGULAR = "Picked up  round for EXAMPLE"
+EXAMPLE_AMMO_PLURAL = "Picked up  rounds for EXAMPLE"
+EXAMPLE_SWITCH_TO = "Out of ammo\r\nPress  to switch to\r\n"
+EXAMPLE_SWAP_AI = "Hold  to take ally's\r\n"
+----
+
+- change the dmr fields to another name and replace the funny symbols with your funny symbol copied from font packer.
+- make sure to add a new  field here starting on line 596.
+
+[source,bash]
+----
+EXAMPLE = ""
+----
+
+- Change the dmr field and the funny symbol copied from font packer.
+- import using tool, you can do this in foundation under `Tools/Run Tool Command.`
+- run the command `strings localized` and set the folder where the `hud_messages.txt` is located
+- this will create a `hud_messages_new.multilingual_unicode_string_list` in the tags folder
+- open the file `globals.chud_globals_defintions` this is located under `tags/ui/chud`
+- find the field `chud text` and replace it with our new `multilingual_unicode_string_list` file
+- continue onto the next chapter.
+
+=== Foundation
+- your model will have been renderd at in the tags folder parallel to the folders you created in your data folder.
+- I like to remove the `.weapon` file and find a gun in the objects folder thats similar to the weapon im making.
+- copy it and replace the following fields:
+    - model (located at the top)
+    - first person (with the field set to spartan make sure to also change the elite)
+- Copy the fx folder into your new asset folder in the tags and replace the fields it's referenced in your `.weapon` file.
+- Copy a chud thats similar to the gun your using as template and paste it in your ui folder.
+- you will find weapon chuds under `ui/chud` copy one and change the name then replace the field under `first person`  followed by `chud interface`
+- open the chuds file and select the field `ammo area` in the section `widget collection`
+- at the very bottom in render data enter in the field the name of your gun from the hud text file we made earlier.
+- repeat this step with the field `ammo area backpack`
+- back in our `.weapon` file scroll until you find the section `NEW hud messages!` and fill in the fields with the ones we made
+
+=== Shaders
+- shaders textures do not use PBR like the ones from halo 3 but instead use diffuse with the specular in the alpha channel.
+- other than that shaders are the same like with halo 3 with the exception of using JSON files to declare them but we use blender to take care of that.
+
+=== Sounds
+- sounds are changed in the fx folder of your asset folder.
+- take the file `firing.effect` for example.
+- you can see that there are multiple parts to each part of the effect
+- match the field name as a directory name in the `sounds` folder located in the root 
+of your asset folder
+- each folder is it's own collection of sounds but compiled as it's own layer.
+- all sounds must be 48KHz 16 or 24bit
+- all sounds must be seperate so each layer in your DAW is it's own sound make not to bounce an entire mix FYI with all sounds present.
+- in osoyoss import as a single layer while also making sure you choose the right class. You can find out what sound other guns are using by looking under import type in the sound file.
+- you may have to re-import twice as tool can somtimes screw up the codec.
